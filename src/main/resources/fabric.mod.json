@@ -16,13 +16,16 @@
 	"entrypoints": {
 		"client": [
 			"dev.rodut11.lowhealthpitcher.LowHealthPitcher"
+		],
+		"modmenu": [
+			"dev.rodut11.lowhealthpitcher.LowHealthPitcherModMenu"
 		]
 	},
 
 	"depends": {
 		"fabricloader": ">=0.14.21",
 		"fabric": "*",
-		"minecraft": "1.20.x",
+		"minecraft": "1.21.5",
 		"modmenu": ">=7.2.2"
 	},
 	"suggests": {
