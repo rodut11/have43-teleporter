@@ -10,8 +10,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class LowHealthPitcher implements ClientModInitializer {
 
-    public static float setYaw = -65.19f;
-    public static float setPitch = -54.23f;
+    public static LowHealthPitcherConfig config = new LowHealthPitcherConfig();
 
     private boolean triggered = false;
     private boolean pitchSet = false;
@@ -28,6 +27,8 @@ public class LowHealthPitcher implements ClientModInitializer {
         ));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (!config.enabled) return;
+
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             if (player == null) return;
 
@@ -44,13 +45,12 @@ public class LowHealthPitcher implements ClientModInitializer {
             if (triggered) {
                 long elapsed = System.currentTimeMillis() - triggerStartTime;
                 if (elapsed <= 500) {
-                    player.setYaw(setYaw);
-                    player.setPitch(setPitch);
+                    player.setYaw(config.setYaw);
+                    player.setPitch(config.setPitch);
                 } else if (!pitchSet && elapsed >= 2500) {
                     player.setPitch(-90f);
                     pitchSet = true;
                 }
-                // Reset after sequence completes (e.g., after 3s), unless low health is still true
                 if (elapsed >= 3000 && !lowHealth) {
                     triggered = false;
                     pitchSet = false;
