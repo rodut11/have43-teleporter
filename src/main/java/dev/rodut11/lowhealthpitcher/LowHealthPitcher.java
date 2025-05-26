@@ -10,7 +10,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class LowHealthPitcher implements ClientModInitializer {
 
-    public static LowHealthPitcherConfig config = new LowHealthPitcherConfig();
+    public static LowHealthPitcherConfig config = LowHealthPitcherConfig.load();
 
     private boolean triggered = false;
     private boolean pitchSet = false;
@@ -32,7 +32,7 @@ public class LowHealthPitcher implements ClientModInitializer {
             ClientPlayerEntity player = MinecraftClient.getInstance().player;
             if (player == null) return;
 
-            boolean lowHealth = player.getHealth() <= 8.0f;
+            boolean lowHealth = player.getHealth() <= config.minHp;
             boolean keyPressed = keyBinding.wasPressed();
             boolean shouldTrigger = lowHealth || keyPressed;
 

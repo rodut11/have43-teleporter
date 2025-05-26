@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "teleporter",
-	"version": "${version}",
+	"version": "1.0.0",
 	"name": "Teleporter",
 	"description": "Quick mod i made to use the teleporter made by jelcraft on the have43 server",
 	"authors": [
