@@ -1,4 +1,8 @@
 {
   "key.lowhealthpitcher.trigger": "Trigger Pitch/Yaw",
   "category.lowhealthpitcher": "Teleporter"
+},
+{
+  "key.lowhealthpitcher.open_angle_menu": "Open Angle Menu",
+  "category.lowhealthpitcher": "LowHealthPitcher"
 }

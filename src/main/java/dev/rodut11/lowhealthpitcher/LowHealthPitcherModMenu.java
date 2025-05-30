@@ -33,12 +33,18 @@ public class LowHealthPitcherModMenu implements ModMenuApi {
                     .setSaveConsumer(val -> LowHealthPitcher.config.setPitch = val)
                     .build());
 
-            // Add min HP slider
             general.addEntry(entryBuilder.startFloatField(Text.literal("Minimum HP"), LowHealthPitcher.config.minHp)
                     .setDefaultValue(8.0f)
                     .setMin(1.0f)
                     .setMax(20.0f)
                     .setSaveConsumer(val -> LowHealthPitcher.config.minHp = val)
+                    .build());
+
+            general.addEntry(entryBuilder.startFloatField(Text.literal("Lock Duration (seconds)"), LowHealthPitcher.config.lockSeconds)
+                    .setDefaultValue(3.0f)
+                    .setMin(0.5f)
+                    .setMax(10.0f)
+                    .setSaveConsumer(val -> LowHealthPitcher.config.lockSeconds = val)
                     .build());
 
             builder.setSavingRunnable(() -> LowHealthPitcher.config.save());
