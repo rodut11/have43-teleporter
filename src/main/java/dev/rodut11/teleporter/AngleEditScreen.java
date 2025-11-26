@@ -1,4 +1,4 @@
-package dev.rodut11.lowhealthpitcher;
+package dev.rodut11.teleporter;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -37,8 +37,8 @@ public class AngleEditScreen extends Screen {
             preset.name = nameField.getText();
             try { preset.yaw = Float.parseFloat(yawField.getText()); } catch (NumberFormatException ignored) {}
             try { preset.pitch = Float.parseFloat(pitchField.getText()); } catch (NumberFormatException ignored) {}
-            LowHealthPitcher.config.anglePresets.set(presetIndex, preset);
-            LowHealthPitcher.config.save();
+            Teleporter.config.anglePresets.set(presetIndex, preset);
+            Teleporter.config.save();
             MinecraftClient.getInstance().setScreen(parent);
         }).position(20, 130).size(80, 20).build());
 

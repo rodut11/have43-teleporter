@@ -1,4 +1,4 @@
-package dev.rodut11.lowhealthpitcher;
+package dev.rodut11.teleporter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LowHealthPitcherConfig {
+public class TeleporterConfig {
     public boolean enabled = true;
     public float setYaw = -65.19f;
     public float setPitch = -54.23f;
@@ -30,14 +30,14 @@ public class LowHealthPitcherConfig {
             e.printStackTrace();
         }
     }
-    public static LowHealthPitcherConfig load() {
+    public static TeleporterConfig load() {
         if (java.nio.file.Files.exists(CONFIG_PATH)) {
             try (java.io.Reader reader = java.nio.file.Files.newBufferedReader(CONFIG_PATH)) {
-                return GSON.fromJson(reader, LowHealthPitcherConfig.class);
+                return GSON.fromJson(reader, TeleporterConfig.class);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return new LowHealthPitcherConfig();
+        return new TeleporterConfig();
     }
 }

@@ -1,4 +1,4 @@
-package dev.rodut11.lowhealthpitcher;
+package dev.rodut11.teleporter;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
@@ -7,7 +7,7 @@ import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 
-public class LowHealthPitcherModMenu implements ModMenuApi {
+public class TeleporterModMenu implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return parent -> {
@@ -18,36 +18,36 @@ public class LowHealthPitcherModMenu implements ModMenuApi {
             ConfigCategory general = builder.getOrCreateCategory(builder.getTitle());
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-            general.addEntry(entryBuilder.startBooleanToggle(Text.literal("Enabled"), LowHealthPitcher.config.enabled)
+            general.addEntry(entryBuilder.startBooleanToggle(Text.literal("Enabled"), Teleporter.config.enabled)
                     .setDefaultValue(true)
-                    .setSaveConsumer(val -> LowHealthPitcher.config.enabled = val)
+                    .setSaveConsumer(val -> Teleporter.config.enabled = val)
                     .build());
 
-            general.addEntry(entryBuilder.startFloatField(Text.literal("Yaw"), LowHealthPitcher.config.setYaw)
+            general.addEntry(entryBuilder.startFloatField(Text.literal("Yaw"), Teleporter.config.setYaw)
                     .setDefaultValue(-65.19f)
-                    .setSaveConsumer(val -> LowHealthPitcher.config.setYaw = val)
+                    .setSaveConsumer(val -> Teleporter.config.setYaw = val)
                     .build());
 
-            general.addEntry(entryBuilder.startFloatField(Text.literal("Pitch"), LowHealthPitcher.config.setPitch)
+            general.addEntry(entryBuilder.startFloatField(Text.literal("Pitch"), Teleporter.config.setPitch)
                     .setDefaultValue(-54.23f)
-                    .setSaveConsumer(val -> LowHealthPitcher.config.setPitch = val)
+                    .setSaveConsumer(val -> Teleporter.config.setPitch = val)
                     .build());
 
-            general.addEntry(entryBuilder.startFloatField(Text.literal("Minimum HP"), LowHealthPitcher.config.minHp)
+            general.addEntry(entryBuilder.startFloatField(Text.literal("Minimum HP"), Teleporter.config.minHp)
                     .setDefaultValue(8.0f)
                     .setMin(1.0f)
                     .setMax(20.0f)
-                    .setSaveConsumer(val -> LowHealthPitcher.config.minHp = val)
+                    .setSaveConsumer(val -> Teleporter.config.minHp = val)
                     .build());
 
-            general.addEntry(entryBuilder.startFloatField(Text.literal("Lock Duration (seconds)"), LowHealthPitcher.config.lockSeconds)
+            general.addEntry(entryBuilder.startFloatField(Text.literal("Lock Duration (seconds)"), Teleporter.config.lockSeconds)
                     .setDefaultValue(3.0f)
                     .setMin(0.5f)
                     .setMax(10.0f)
-                    .setSaveConsumer(val -> LowHealthPitcher.config.lockSeconds = val)
+                    .setSaveConsumer(val -> Teleporter.config.lockSeconds = val)
                     .build());
 
-            builder.setSavingRunnable(() -> LowHealthPitcher.config.save());
+            builder.setSavingRunnable(() -> Teleporter.config.save());
             return builder.build();
         };
     }

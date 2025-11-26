@@ -1,4 +1,4 @@
-package dev.rodut11.lowhealthpitcher;
+package dev.rodut11.teleporter;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -17,7 +17,7 @@ public class AngleMenuScreen extends Screen {
     public AngleMenuScreen(Screen parent) {
         super(Text.literal("Angle Presets"));
         this.parent = parent;
-        this.presets = LowHealthPitcher.config.anglePresets;
+        this.presets = Teleporter.config.anglePresets;
     }
 
     @Override
@@ -37,8 +37,17 @@ public class AngleMenuScreen extends Screen {
             addDrawableChild(ButtonWidget.builder(Text.literal(preset.name), btn -> {
                 MinecraftClient client = MinecraftClient.getInstance();
                 if (client.player != null) {
-                    client.player.setYaw(preset.yaw);
-                    client.player.setPitch(preset.pitch);
+                    // Trigger the preset countdown/look-up
+                    Teleporter.triggerPreset(preset);
+
+                    // Optional: feedback in chat
+                    client.execute(() -> {
+                        if (client.inGameHud != null && client.inGameHud.getChatHud() != null) {
+                            client.inGameHud.getChatHud().addMessage(
+                                    Text.literal("§bPreset '" + preset.name + "' selected!")
+                            );
+                        }
+                    });
                 }
             }).position(20, y).size(100, 20).build());
 
@@ -50,7 +59,7 @@ public class AngleMenuScreen extends Screen {
             // Remove button
             addDrawableChild(ButtonWidget.builder(Text.literal("Remove"), btn -> {
                 presets.remove(idx);
-                LowHealthPitcher.config.save();
+                Teleporter.config.save();
                 MinecraftClient.getInstance().setScreen(new AngleMenuScreen(parent));
             }).position(190, y).size(60, 20).build());
         }
@@ -59,12 +68,12 @@ public class AngleMenuScreen extends Screen {
         if (presets.size() < 15) {
             addDrawableChild(ButtonWidget.builder(Text.literal("Add Preset"), btn -> {
                 presets.add(new AnglePreset("Preset " + (presets.size() + 1), 0f, 0f));
-                LowHealthPitcher.config.save();
+                Teleporter.config.save();
                 MinecraftClient.getInstance().setScreen(new AngleMenuScreen(parent));
             }).position(20, y).size(120, 20).build());
         }
         addDrawableChild(ButtonWidget.builder(Text.literal("Done"), btn -> {
-            LowHealthPitcher.config.save();
+            Teleporter.config.save();
             MinecraftClient.getInstance().setScreen(parent);
         }).position(150, y).size(80, 20).build());
     }

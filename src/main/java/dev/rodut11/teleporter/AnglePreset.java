@@ -1,4 +1,4 @@
-package dev.rodut11.lowhealthpitcher;
+package dev.rodut11.teleporter;
 
 public class AnglePreset {
     public String name;

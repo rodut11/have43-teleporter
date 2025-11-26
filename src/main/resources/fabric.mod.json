@@ -1,11 +1,12 @@
 {
 	"schemaVersion": 1,
 	"id": "teleporter",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"name": "Teleporter",
-	"description": "Quick mod i made to use the teleporter made by jelcraft on the have43 server",
+	"description": "Mod to make the usage of relays and S.I.Us easier on the have43 server",
 	"authors": [
-		"rodut11"
+		"rodut11",
+        "JelCraft"
 	],
 	"contact": {
 		"homepage": "rodut11.dev"
@@ -15,17 +16,17 @@
 	"environment": "*",
 	"entrypoints": {
 		"client": [
-			"dev.rodut11.lowhealthpitcher.LowHealthPitcher"
+			"dev.rodut11.teleporter.Teleporter"
 		],
 		"modmenu": [
-			"dev.rodut11.lowhealthpitcher.LowHealthPitcherModMenu"
+			"dev.rodut11.teleporter.TeleporterModMenu"
 		]
 	},
 
 	"depends": {
 		"fabricloader": ">=0.14.21",
 		"fabric": "*",
-		"minecraft": "1.21.5",
+		"minecraft": "1.21.10",
 		"modmenu": ">=7.2.2"
 	},
 	"suggests": {

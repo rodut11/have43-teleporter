@@ -1,14 +1,14 @@
-// LowHealthPitcherClient.java
+// TeleporterClient.java
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 
-public class LowHealthPitcherClient implements ClientModInitializer {
+public class TeleporterClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		LowHealthPitcher.init();
+		Teleporter.init();
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			while (LowHealthPitcher.openAngleMenuKey.wasPressed()) {
+			while (Teleporter.openAngleMenuKey.wasPressed()) {
 				client.setScreen(new AngleMenuScreen(null));
 			}
 		});

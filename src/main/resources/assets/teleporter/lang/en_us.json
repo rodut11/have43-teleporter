@@ -1,8 +1,8 @@
 {
-  "key.lowhealthpitcher.trigger": "Trigger Pitch/Yaw",
-  "category.lowhealthpitcher": "Teleporter"
+  "key.teleporter.trigger": "Trigger Pitch/Yaw",
+  "category.teleporter": "Teleporter"
 },
 {
-  "key.lowhealthpitcher.open_angle_menu": "Open Angle Menu",
-  "category.lowhealthpitcher": "LowHealthPitcher"
+  "key.teleporter.open_angle_menu": "Open Angle Menu",
+  "category.teleporter": "Teleporter"
 }
