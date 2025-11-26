@@ -30,7 +30,7 @@ public class Teleporter implements ClientModInitializer {
     private static long presetTriggerStartTime = 0;
     private static float presetYaw = 0f;
     private static float presetPitch = 0f;
-    private static final long PRESET_LOOKUP_DELAY_MS = 5000; // 5 seconds
+    private static final long PRESET_LOOKUP_DELAY_MS = 2000; // 5 seconds
     private static int lastCountdownSecond = -1;
 
     public static void triggerPreset(AnglePreset preset) {
