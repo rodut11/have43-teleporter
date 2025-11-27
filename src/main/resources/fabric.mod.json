@@ -9,11 +9,14 @@
         "JelCraft"
 	],
 	"contact": {
-		"homepage": "https://rodut11.dev/"
+		"homepage": "https://rodut11.dev/",
+        "issues" : "https://github.com/rodut11/have43-teleporter/issues",
+        "sources": "https://github.com/rodut11/have43-teleporter"
 	},
+
 	"license": "GPL-3.0",
 	"icon": "assets/teleporter/icon.png",
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
 		"client": [
 			"dev.rodut11.teleporter.Teleporter"
