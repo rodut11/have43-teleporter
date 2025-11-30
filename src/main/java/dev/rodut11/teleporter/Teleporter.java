@@ -44,7 +44,7 @@ public class Teleporter implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        Identifier teleporterId = Identifier.of("teleporter", "category.teleporter");
+        Identifier teleporterId = Identifier.of("teleporter", "teleporter");
         KeyBinding.Category teleporterCategory = new KeyBinding.Category(teleporterId);
 
         triggerKeyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
