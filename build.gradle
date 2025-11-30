@@ -1,10 +1,10 @@
 plugins {
-    id 'fabric-loom' version '1.13-SNAPSHOT'
+    id 'fabric-loom' version "${loom_version}"
     id 'java'
 }
 
-group = 'dev.rodut11'
-version = '1.2.1'
+group = "${maven_group}"
+version = "${mod_version}"
 
 repositories {
     maven { url = 'https://maven.fabricmc.net/' }
@@ -12,14 +12,15 @@ repositories {
     maven { url = 'https://maven.shedaniel.me/' }       // For Cloth Config
     mavenCentral()
 }
+
 dependencies {
-    minecraft "com.mojang:minecraft:1.21.10"
-    mappings "net.fabricmc:yarn:1.21.10+build.3:v2"
-    modImplementation "net.fabricmc:fabric-loader:0.18.1"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.138.3+1.21.10"
-    modImplementation "com.terraformersmc:modmenu:7.2.2"
-    modImplementation "me.shedaniel.cloth:cloth-config-fabric:11.1.106"
-    implementation 'com.google.code.gson:gson:2.10.1'
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings "net.fabricmc:yarn:${yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+    modImplementation "com.terraformersmc:modmenu:${modmenu_version}"
+    modImplementation "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
+    implementation "com.google.code.gson:gson:${gson_version}"
 }
 
 java {
