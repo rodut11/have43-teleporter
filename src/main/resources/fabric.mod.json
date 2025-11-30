@@ -1,12 +1,13 @@
 {
 	"schemaVersion": 1,
 	"id": "teleporter",
-	"version": "1.2.1",
+	"version": "1.2.2",
 	"name": "Teleporter",
 	"description": "Mod to make the usage of relays and S.I.Us easier on the have43 server",
 	"authors": [
-		"rodut11",
-        "JelCraft"
+		"Main Code: rodut11",
+        "Emotional Support: JelCraft",
+		"Code Review: volt"
 	],
 	"contact": {
 		"homepage": "https://rodut11.dev/",
