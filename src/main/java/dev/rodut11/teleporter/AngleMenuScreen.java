@@ -39,15 +39,6 @@ public class AngleMenuScreen extends Screen {
                 if (client.player != null) {
                     // Trigger the preset countdown/look-up
                     Teleporter.triggerPreset(preset);
-
-                    // Optional: feedback in chat
-                    client.execute(() -> {
-                        if (client.inGameHud != null && client.inGameHud.getChatHud() != null) {
-                            client.inGameHud.getChatHud().addMessage(
-                                    Text.literal("§bPreset '" + preset.name + "' selected!")
-                            );
-                        }
-                    });
                 }
             }).position(20, y).size(100, 20).build());
 

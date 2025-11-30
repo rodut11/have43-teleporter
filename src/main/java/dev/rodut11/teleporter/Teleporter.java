@@ -16,30 +16,42 @@ public class Teleporter implements ClientModInitializer {
 
     public static TeleporterConfig config = TeleporterConfig.load();
 
-    private boolean triggered = false;
-    private long triggerStartTime = 0;
-    private float targetYaw = 0f;
-    private float targetPitch = 0f;
+    private static boolean isActionActive = false;
+    private static boolean isDelayed = false;
+    private static long actionStartTime = 0;
+    private static float initialYaw = 0f;
+    private static float initialPitch = 0f;
+    private static final long LOOKUP_DELAY_MS = 2000;
+    private static int lastCountdownSecond = -1;
 
+    // Key Bindings
     private KeyBinding triggerKeyBinding;
     public static KeyBinding openAngleMenuKey;
 
-    // Preset-trigger state
-    private static boolean presetTriggered = false;
-    private static boolean presetLookedUp = false;
-    private static long presetTriggerStartTime = 0;
-    private static float presetYaw = 0f;
-    private static float presetPitch = 0f;
-    private static final long PRESET_LOOKUP_DELAY_MS = 2000; // 5 seconds
-    private static int lastCountdownSecond = -1;
+    public static void triggerTeleportAction(float targetYaw, float targetPitch, String presetName) {
+        // Only start if no action is currently running
+        if (!isActionActive) {
+            initialYaw = targetYaw;
+            initialPitch = targetPitch;
+            actionStartTime = System.currentTimeMillis();
+            isActionActive = true;
+            isDelayed = true;
+            lastCountdownSecond = -1;
+
+            // Announce the action
+            MinecraftClient client = MinecraftClient.getInstance();
+            if (client.inGameHud != null && client.inGameHud.getChatHud() != null) {
+                client.execute(() -> {
+                    client.inGameHud.getChatHud().addMessage(
+                            Text.literal(String.format("§bTeleporting to %s!", presetName)).formatted(Formatting.AQUA)
+                    );
+                });
+            }
+        }
+    }
 
     public static void triggerPreset(AnglePreset preset) {
-        presetYaw = preset.yaw;
-        presetPitch = preset.pitch;
-        presetTriggerStartTime = System.currentTimeMillis();
-        presetTriggered = true;
-        presetLookedUp = false;
-        lastCountdownSecond = -1;
+        triggerTeleportAction(preset.yaw, preset.pitch, preset.name);
     }
 
     @Override
@@ -62,49 +74,35 @@ public class Teleporter implements ClientModInitializer {
         ));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (client.player == null) return;
+            ClientPlayerEntity player = client.player;
+            if (player == null) return;
 
             // Open angle menu
             while (openAngleMenuKey.wasPressed()) {
                 client.setScreen(new AngleMenuScreen(null));
             }
 
-            if (!config.enabled) return;
-
-            ClientPlayerEntity player = client.player;
+            // Check for key press OR low health
             boolean lowHealth = player.getHealth() <= config.minHp;
             boolean keyPressed = triggerKeyBinding.wasPressed();
-            boolean shouldTrigger = lowHealth || keyPressed;
+            boolean shouldTrigger = (lowHealth && config.enabled) || keyPressed;
 
-            // Low HP / manual trigger logic (just lock configured angle)
-            if (shouldTrigger && !triggered) {
-                triggerStartTime = System.currentTimeMillis();
-                triggered = true;
-                targetYaw = config.setYaw;
-                targetPitch = config.setPitch;
+            if (shouldTrigger && !isActionActive) {
+                // Key press or low health triggers the action with the config angle
+                triggerTeleportAction(config.setYaw, config.setPitch, "Configured Angles");
             }
 
-            if (triggered) {
-                long elapsed = System.currentTimeMillis() - triggerStartTime;
-                if (elapsed <= (long)(config.lockSeconds * 1000)) {
-                    player.setYaw(targetYaw);
-                    player.setPitch(targetPitch);
-                } else {
-                    triggered = false;
-                }
-            }
+            if (isActionActive) {
+                long elapsed = System.currentTimeMillis() - actionStartTime;
 
-            // Preset-trigger logic
-            if (presetTriggered) {
-                long elapsed = System.currentTimeMillis() - presetTriggerStartTime;
+                if (isDelayed) {
+                    // Look at the initial angle
+                    player.setYaw(initialYaw);
+                    player.setPitch(initialPitch);
 
-                // Hold the preset angle until look-up
-                if (!presetLookedUp) {
-                    player.setYaw(presetYaw);
-                    player.setPitch(presetPitch);
-
-                    long remaining = PRESET_LOOKUP_DELAY_MS - elapsed;
+                    long remaining = LOOKUP_DELAY_MS - elapsed;
                     if (remaining > 0) {
+                        // Countdown logic
                         int secondsLeft = (int) Math.ceil((double) remaining / 1000.0);
                         if (secondsLeft != lastCountdownSecond) {
                             lastCountdownSecond = secondsLeft;
@@ -117,22 +115,36 @@ public class Teleporter implements ClientModInitializer {
                             });
                         }
                     } else {
-                        // Do the look-up
-                        presetLookedUp = true;
-                        triggerStartTime = System.currentTimeMillis();
-                        triggered = true;
-                        targetYaw = presetYaw;
-                        targetPitch = -90f; // look up
+                        // Start look up
+                        isDelayed = false;
+                        actionStartTime = System.currentTimeMillis(); // Restart timer for the lock duration
+                        lastCountdownSecond = -1; // Reset countdown
+                        
+                        // Send message
+                        client.execute(() -> {
+                            if (client.inGameHud != null && client.inGameHud.getChatHud() != null) {
+                                client.inGameHud.getChatHud().addMessage(
+                                        Text.literal("Looking Up!").formatted(Formatting.RED)
+                                );
+                            }
+                        });
                     }
-                }
+                } else {
+                    // Look up for lock seconds
+                    player.setYaw(initialYaw);
+                    player.setPitch(-90f); 
 
-                // Reset preset after lookup + lockSeconds
-                if (presetLookedUp) {
-                    long lookupElapsed = System.currentTimeMillis() - triggerStartTime;
-                    if (lookupElapsed >= (long)(config.lockSeconds * 1000)) {
-                        presetTriggered = false;
-                        presetLookedUp = false;
+                    if (elapsed >= (long)(config.lockSeconds * 1000)) {
+                        // Lock duration is over
+                        isActionActive = false;
                         lastCountdownSecond = -1;
+                        client.execute(() -> {
+                            if (client.inGameHud != null && client.inGameHud.getChatHud() != null) {
+                                client.inGameHud.getChatHud().addMessage(
+                                        Text.literal("Teleportation Complete!").formatted(Formatting.GREEN)
+                                );
+                            }
+                        });
                     }
                 }
             }

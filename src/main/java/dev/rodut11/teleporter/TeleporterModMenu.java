@@ -18,7 +18,7 @@ public class TeleporterModMenu implements ModMenuApi {
             ConfigCategory general = builder.getOrCreateCategory(builder.getTitle());
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-            general.addEntry(entryBuilder.startBooleanToggle(Text.literal("Enabled"), Teleporter.config.enabled)
+            general.addEntry(entryBuilder.startBooleanToggle(Text.literal("Low Health Teleporting Enabled"), Teleporter.config.enabled)
                     .setDefaultValue(true)
                     .setSaveConsumer(val -> Teleporter.config.enabled = val)
                     .build());
